@@ -1,7 +1,10 @@
 from django.urls import path
-from fitness.views import HomeView,AddUsersCreate
+from .import views
 
 urlpatterns = [
-    path('', HomeView.as_view(),name='home'),
-    path('add/',AddUsersCreate.as_view(),name='add'),
+    path('', views.HomeView.as_view(),name='home'),
+    path('add/',views.AddUsersCreate.as_view(),name='add'),
+    path('list/',views.UsersListView.as_view(),name='list'),
+    path('update/<int:pk>',views.UsersUpdateView.as_view(),name='update'),
+    path('delete/<int:pk>',views.UsersDeleteView.as_view(),name='delete'),
 ]
