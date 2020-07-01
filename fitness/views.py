@@ -6,10 +6,9 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-
-
 class HomeView(TemplateView):
 	template_name = "base.html"
+
 
 class AddUsersCreate(CreateView):
 	model = AddUsers
@@ -19,6 +18,7 @@ class AddUsersCreate(CreateView):
 	def get_success_url(self):
 		return reverse_lazy('list')
 
+
 class UsersListView(ListView):
 	model = AddUsers
 	template_name = 'users_list.html'
@@ -26,6 +26,7 @@ class UsersListView(ListView):
 	def get_context_data(self, **kwargs):
 		context = super(UsersListView, self).get_context_data(**kwargs)
 		return context
+
 
 class UsersUpdateView(UpdateView):
 	model = AddUsers
@@ -35,6 +36,7 @@ class UsersUpdateView(UpdateView):
 
 	def get_success_url(self):
 		return reverse_lazy('home')
+
 
 class UsersDeleteView(DeleteView):
 	model = AddUsers
