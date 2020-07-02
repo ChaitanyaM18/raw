@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="container">
+  <div class="card-header">
+    <h3>Users due for payment</h3>
+  </div>
+  <div class="table-responsive">
+    <table class="table">
+      <thead  class="thead-dark">
+        <tr>
+          <th scope="row"></th>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">DOB</th>
+          <th scope="col">Membership Start Date</th>
+          <th scope="col">Membership End Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for post in posts %}
+        <tr>
+          <th scope="row"></th>
+          <td>{{post.first_name}}</td>
+          <td>{{post.last_name}}</td>
+          <td>{{post.date_of_birth }}</td>
+          <td>{{post.membership_start_date}}</td>
+          <td>{{post.membership_end_date}}</td>
+        {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+
+</div>
+</div>
+{% endblock %}

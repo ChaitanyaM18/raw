@@ -7,4 +7,5 @@ urlpatterns = [
     path('list/',views.UsersListView.as_view(),name='list'),
     path('update/<int:pk>',views.UsersUpdateView.as_view(),name='update'),
     path('delete/<int:pk>',views.UsersDeleteView.as_view(),name='delete'),
+    path('get_alerts',views.get_alerts,name='get_alerts'),
 ]

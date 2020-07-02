@@ -30,14 +30,17 @@
           <td>{{object.membership_start_date}}</td>
           <td>{{object.membership_end_date}}</td>
           {% if object.id  %}
-              <td><a class="btn btn-outline-info" href="{% url 'update' pk=object.id %}">Update</a></td>
-              <td><a class="btn btn-outline-info" href="{% url 'delete' pk=object.id %}">Delete</a></td>
+              <td><a class="btn btn-outline-success" href="{% url 'update' pk=object.id %}">Update</a></td>
+              <td><a class="btn btn-outline-danger" href="{% url 'delete' pk=object.id %}">Delete</a></td>
           {% endif %}
         {% endfor %}
         </tr>
       </tbody>
     </table>
 
-    {% endblock %}
 </div>
 </div>
+{% for post in posts %}
+{{ post.first_name }}
+{% endfor %}
+{% endblock %}

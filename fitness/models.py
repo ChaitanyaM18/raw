@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 from phone_field import PhoneField
+from django.utils import timezone
 
 class AddUsers(models.Model):
 	first_name = models.CharField(max_length=300)
@@ -13,8 +14,8 @@ class AddUsers(models.Model):
 	full_address = models.TextField(max_length=None)
 	phone_number = models.CharField(max_length=20)
 	alternate_phone = models.CharField(max_length=20)
-	membership_start_date = models.DateField()
-	membership_end_date = models.DateField()
+	membership_start_date = models.DateField(default=timezone.now)
+	membership_end_date = models.DateField(default=timezone.now)
 	blood_group =  models.CharField(max_length=20)
 	medical_history =  models.CharField(max_length=300)
 

@@ -5,6 +5,10 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.utils import timezone
+import datetime
+from django.shortcuts import render, redirect, get_object_or_404
+
 
 class HomeView(TemplateView):
 	template_name = "base.html"
@@ -44,3 +48,7 @@ class UsersDeleteView(DeleteView):
 
 	def get_success_url(self):
 		return reverse_lazy('list')
+
+def get_alerts(request):
+	posts = AddUsers.objects.filter(membership_end_date__lte= datetime.date.today()).order_by('membership_start_date')
+	return render(request,'alerts.html',{'posts':posts})
