@@ -8,6 +8,10 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 import datetime
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from django.views.generic import View
+from fitness.utils import render_to_pdf
+from .forms import GenerateInvoiceForm
 
 
 class HomeView(TemplateView):
@@ -52,3 +56,26 @@ class UsersDeleteView(DeleteView):
 def get_alerts(request):
 	posts = AddUsers.objects.filter(membership_end_date__lte= datetime.date.today()).order_by('membership_start_date')
 	return render(request,'alerts.html',{'posts':posts})
+
+def generate_invoice(request):
+	if request.method == "POST":
+		form = GenerateInvoiceForm(request.POST)
+		if form.is_valid():
+			form.save()
+			customer_name = form.cleaned_data['customer_name']
+			item_name = form.cleaned_data['item_name']
+			item_quantity = form.cleaned_data['item_quantity']
+			item_amount = form.cleaned_data['item_amount']
+			item_date = form.cleaned_data['item_date']
+			data = {
+			'customer_name':customer_name,
+			'item_name':item_name,
+			'item_quantity':item_quantity,
+			'item_amount':item_amount,
+			'item_date':item_date,
+			}
+			pdf = render_to_pdf('invoice.html', data)
+			return HttpResponse(pdf, content_type='application/pdf')
+	else:
+		form = GenerateInvoiceForm()
+	return render(request,'generate_invoice.html',{'form':form})

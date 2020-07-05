@@ -21,3 +21,14 @@ class AddUsers(models.Model):
 
 	def __str__(self):
 		return self.first_name
+
+
+class GenerateInvoice(models.Model):
+	customer_name = models.CharField(max_length=300)
+	item_name = models.CharField(max_length=300)
+	item_quantity = models.CharField(max_length=300)
+	item_amount = models.CharField(max_length=300)
+	item_date = models.DateField(default=timezone.now)
+
+	def __str__(self):
+		return self.item_name

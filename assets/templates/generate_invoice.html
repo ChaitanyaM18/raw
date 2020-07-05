@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block content %}
+
+ <div class="container">
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+    {% render_field form.customer_name class="form-control" placeholder="Enter First Name"%}
+    {{form.customer_name.errors}}
+    </div>
+    <div class="form-group col-md-6">
+    {% render_field form.item_name class="form-control" placeholder="Item Name"%}
+    {{form.item_name.errors}}
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      {% render_field form.item_quantity class="form-control" placeholder="Item Quantity"%}
+      {{form.item_quantity.errors}}
+    </div>
+    <div class="form-group col-md-4">
+    {% render_field form.item_amount class="form-control" placeholder="Item Amount"%}
+    {{form.item_amount.errors}}
+    </div>
+    <div class="form-group col-md-4">
+      {% render_field form.item_date class="form-control" placeholder="Item Date"%}
+    {{form.item_date.errors}}
+    </div>
+  </div>
+  <center><button type="submit" class="btn btn-outline-primary">Submit</button></center>
+</form>
+</div>
+
+
+{% endblock content %}
