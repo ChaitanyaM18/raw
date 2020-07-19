@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views.generic import View
 from fitness.utils import render_to_pdf
-from .forms import GenerateInvoiceForm
+from .forms import GenerateInvoiceForm,AddUsersForm
 
 
 class HomeView(TemplateView):
@@ -20,8 +20,8 @@ class HomeView(TemplateView):
 
 class AddUsersCreate(CreateView):
 	model = AddUsers
+	form_class = AddUsersForm
 	template_name = 'add_users.html'
-	fields = '__all__'
 
 	def get_success_url(self):
 		return reverse_lazy('list')
