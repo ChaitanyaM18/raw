@@ -8,5 +8,5 @@ urlpatterns = [
     path('update/<int:pk>',views.UsersUpdateView.as_view(),name='update'),
     path('delete/<int:pk>',views.UsersDeleteView.as_view(),name='delete'),
     path('get_alerts',views.get_alerts,name='get_alerts'),
-    path('generate_invoice/',views.generate_invoice,name='generate_invoice'),
+    path('generate_invoice/',views.GenerateInvoiceView.as_view(),name='generate_invoice'),
 ]

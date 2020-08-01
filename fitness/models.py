@@ -26,10 +26,17 @@ class AddUsers(models.Model):
 
 class GenerateInvoice(models.Model):
 	customer_name = models.CharField(max_length=300)
+	purchased_date = models.DateField(default=timezone.now)
+	customer_address = models.TextField(blank=True,null=True)
+
+	def __str__(self):
+		return self.customer_name
+
+class GenerateItems(models.Model):
+	customer_name = models.ForeignKey(GenerateInvoice,related_name="customer",on_delete=models.CASCADE)
 	item_name = models.CharField(max_length=300)
 	item_quantity = models.CharField(max_length=300)
 	item_amount = models.CharField(max_length=300)
-	item_date = models.DateField(default=timezone.now)
 
 	def __str__(self):
 		return self.item_name

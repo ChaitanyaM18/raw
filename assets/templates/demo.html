@@ -1,0 +1,34 @@
+<form class="form-horizontal" method="post">
+  <input type="hidden" name="csrfmiddlewaretoken" value="OcaJOSlxlTgayRxxwQVxImu5DZJ4PMP3H1iEW71goXoT09iBhfwKvg13BEcRlWAr">
+<div>
+  <div id="div_id_customer_name" class="control-group">
+    <label for="id_customer_name" class="control-label requiredField">Customer name<span class="asteriskField">*</span></label>
+  <div class="controls">
+      <input type="text" name="customer_name" maxlength="300" class="textinput textInput" required="" id="id_customer_name"> 
+    </div>
+  </div><div id="div_id_purchased_date" class="control-group"> <label for="id_purchased_date" class="control-label requiredField">
+                Purchased date<span class="asteriskField">*</span> </label> <div class="controls"> <input type="text" name="purchased_date" value="2020-08-01" class="dateinput" required="" id="id_purchased_date"><input type="hidden" name="initial-purchased_date" value="2020-08-01 06:48:20+00:00" id="initial-id_purchased_date"> </div> </div> <div id="div_id_customer_address" class="control-group"> <label for="id_customer_address" class="control-label ">
+                Customer address
+            </label> <div class="controls"> <textarea name="customer_address" cols="40" rows="10" class="textarea" id="id_customer_address"></textarea> </div> </div>
+
+<fieldset> <legend>Add titles</legend> <table class="col-md-9" style="margin-left: 10px;"> <input type="hidden" name="customer-TOTAL_FORMS" value="1" id="id_customer-TOTAL_FORMS"> <input type="hidden" name="customer-INITIAL_FORMS" value="0" id="id_customer-INITIAL_FORMS"> <input type="hidden" name="customer-MIN_NUM_FORMS" value="0" id="id_customer-MIN_NUM_FORMS"> <input type="hidden" name="customer-MAX_NUM_FORMS" value="1000" id="id_customer-MAX_NUM_FORMS"> <tbody><tr class="row1 formset_row-customer dynamic-form"> <td> <input type="hidden" name="customer-0-id" id="id_customer-0-id"> <input type="hidden" name="customer-0-customer_name" id="id_customer-0-customer_name"> <div id="div_id_customer-0-item_name" class="control-group"> <label for="id_customer-0-item_name" class="control-label requiredField">
+                Item name<span class="asteriskField">*</span> </label> <div class="controls"> <input type="text" name="customer-0-item_name" maxlength="300" class="textinput textInput" id="id_customer-0-item_name"> </div> </div> </td> <td> <div id="div_id_customer-0-item_quantity" class="control-group"> <label for="id_customer-0-item_quantity" class="control-label requiredField">
+                Item quantity<span class="asteriskField">*</span> </label> <div class="controls"> <input type="text" name="customer-0-item_quantity" maxlength="300" class="textinput textInput" id="id_customer-0-item_quantity"> </div> </div> </td> <td> <div id="div_id_customer-0-item_amount" class="control-group"> <label for="id_customer-0-item_amount" class="control-label requiredField">
+                Item amount<span class="asteriskField">*</span> </label> <div class="controls"> <input type="text" name="customer-0-item_amount" maxlength="300" class="textinput textInput" id="id_customer-0-item_amount"> </div> </div> </td> <td> <div id="div_id_customer-0-DELETE" class="control-group"> <div class="controls"> <label for="id_customer-0-DELETE" class="checkbox " style="display: none;"> <input type="hidden" name="customer-0-DELETE" id="id_customer-0-DELETE">
+                        Delete
+                    </label> </div> </div> <a class="delete-row" href="javascript:void(0)">remove</a></td> </tr> <tr class="dynamic-form-add"><td colspan="4"><a class="add-row" href="javascript:void(0)">add another</a></td></tr></tbody></table>
+<br>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/static/js/formset.js"></script>
+<script type="text/javascript">
+    $('.formset_row-customer').formset({
+        addText: 'add another',
+        deleteText: 'remove',
+        prefix: 'customer',
+    });
+</script> </fieldset>
+<br><div class="buttonHolder"> <input type="submit" name="submit" value="Save" class="btn btn-primary" id="submit-id-submit">
+
+</div>
+
+</div> </form>
