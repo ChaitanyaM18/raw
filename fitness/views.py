@@ -7,6 +7,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.utils import timezone
 import datetime
+from datetime import timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views.generic import View
@@ -38,8 +39,9 @@ class UsersListView(ListView):
 
 class UsersUpdateView(UpdateView):
 	model = AddUsers
+	form_class = AddUsersForm
 	template_name = "add_users.html"
-	fields = '__all__'
+	# fields = '__all__'
 	success_url ="/"
 
 	def get_success_url(self):
@@ -54,7 +56,9 @@ class UsersDeleteView(DeleteView):
 		return reverse_lazy('list')
 
 def get_alerts(request):
-	posts = AddUsers.objects.filter(membership_end_date__lte= datetime.date.today()).order_by('membership_start_date')
+	before_5_days = timezone.now() + timedelta(days=5)
+	print(before_5_days,'before_5_days')
+	posts = AddUsers.objects.filter(membership_end_date__gte= before_5_days).order_by('membership_start_date')
 	return render(request,'alerts.html',{'posts':posts})
 
 def generate_invoice(request):
@@ -67,12 +71,14 @@ def generate_invoice(request):
 			item_quantity = form.cleaned_data['item_quantity']
 			item_amount = form.cleaned_data['item_amount']
 			item_date = form.cleaned_data['item_date']
+			total_amount = float(item_quantity)*float(item_amount)
 			data = {
 			'customer_name':customer_name,
 			'item_name':item_name,
 			'item_quantity':item_quantity,
 			'item_amount':item_amount,
 			'item_date':item_date,
+			'total_amount':total_amount,
 			}
 			pdf = render_to_pdf('invoice.html', data)
 			return HttpResponse(pdf, content_type='application/pdf')

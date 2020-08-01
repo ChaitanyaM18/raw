@@ -1,5 +1,6 @@
 from django import forms
 from .models import AddUsers,GenerateInvoice
+from django.forms import modelformset_factory
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -15,6 +16,9 @@ class AddUsersForm(forms.ModelForm):
         }
 
 class GenerateInvoiceForm(forms.ModelForm):
-	class Meta:
-		model = GenerateInvoice
-		fields = '__all__'
+    class Meta:
+        model = GenerateInvoice
+        fields = '__all__'
+        widgets = {
+            'item_date': DateInput(),
+        }

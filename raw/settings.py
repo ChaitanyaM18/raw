@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'phone_field',
     'fitness',
     'widget_tweaks',
+    'assets'
 ]
 
 MIDDLEWARE = [

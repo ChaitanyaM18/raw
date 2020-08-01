@@ -18,6 +18,7 @@ class AddUsers(models.Model):
 	membership_end_date = models.DateField(default=timezone.now)
 	blood_group =  models.CharField(max_length=20)
 	medical_history =  models.CharField(max_length=300)
+	# paid = models.BooleanField(default=False)
 
 	def __str__(self):
 		return self.first_name

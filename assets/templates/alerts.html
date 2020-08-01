@@ -16,6 +16,7 @@
           <th scope="col">DOB</th>
           <th scope="col">Membership Start Date</th>
           <th scope="col">Membership End Date</th>
+          <th scope="col">Update</th>
         </tr>
       </thead>
       <tbody>
@@ -27,6 +28,10 @@
           <td>{{post.date_of_birth }}</td>
           <td>{{post.membership_start_date}}</td>
             <td class="alert alert-danger">{{post.membership_end_date}}</td>
+            {% if post.id  %}
+                <td><a class="btn btn-outline-success" href="{% url 'update' pk=post.id %}">Update</a></td>
+                <!-- <td><a class="btn btn-outline-danger" href="{% url 'delete' pk=post.id %}">Delete</a></td> -->
+            {% endif %}
         {% endfor %}
         </tr>
       </tbody>
