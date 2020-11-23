@@ -3,7 +3,11 @@
 {% block content %}
 
  <div class="container">
-
+   <div class="card">
+     <div class="card-header">
+       <h3>Add New User</h3>
+     </div>
+     <div class="card-body">
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
@@ -75,8 +79,11 @@
         {{form.medical_history.errors}}
         </div>
     </div>
+    <br>
   <center><button type="submit" class="btn btn-outline-primary">Submit</button></center>
 </form>
+</div>
+</div>
 </div>
 
 

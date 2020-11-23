@@ -28,6 +28,7 @@ class GenerateInvoice(models.Model):
 	customer_name = models.CharField(max_length=300)
 	purchased_date = models.DateField(default=timezone.now)
 	customer_address = models.TextField(blank=True,null=True)
+	grand_total = models.CharField(max_length=300,blank=True,null=True)
 
 	def __str__(self):
 		return self.customer_name
@@ -37,6 +38,7 @@ class GenerateItems(models.Model):
 	item_name = models.CharField(max_length=300)
 	item_quantity = models.CharField(max_length=300)
 	item_amount = models.CharField(max_length=300)
+	# grand_total = models.CharField(max_length=300,blank=True,null=True)
 
 	def __str__(self):
 		return self.item_name
