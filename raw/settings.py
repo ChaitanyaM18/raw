@@ -113,9 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'Asia/Kolkata'
+TIME_ZONE =  'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -134,3 +132,4 @@ print ("STATIC_ROOT", STATIC_ROOT)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,  os.path.join(BASE_DIR, 'assets/media'))
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

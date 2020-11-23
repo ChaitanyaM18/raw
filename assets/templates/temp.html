@@ -34,6 +34,10 @@
                 color: #333; /* old IE */
                 background-color: #fff; /* Modern Browsers */
             }
+            .strong{
+              font-weight: bolder;
+              align-content: flex-end;
+            }
         </style>
     </head>
     <body>
@@ -60,7 +64,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Example 2</title>
+    <title>INVOICE</title>
     <link rel="stylesheet" href="style.css" media="all" />
   </head>
   <body>
@@ -102,7 +106,7 @@
       <br>
       <br>
 
-      <table border="0" cellspacing="0" cellpadding="0">
+      <table width="100%" border="1" cellspacing="1" cellpadding="5">
         <thead>
           <tr>
             <!-- <th class="no">#</th> -->
@@ -113,7 +117,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for item in dict_df_p.itertuples %}
+          {% for item in dict_df.itertuples %}
           <tr>
             <!-- <td class="no">01</td> -->
             <td class="desc"><h3>{{item.item_name}}</h3></td>
@@ -141,7 +145,7 @@
       </div>
     </main> -->
     <footer>
-      Grand Total : {{total}}
+    <strong>  Grand Total :</strong> <b>{{total}}</b>
     </footer>
   </body>
 </html>

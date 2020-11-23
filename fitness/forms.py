@@ -55,7 +55,7 @@ class CollectionForm(forms.ModelForm):
                 Field('customer_name'),
                 Field('purchased_date'),
                 Field('customer_address'),
-                Fieldset('Add titles',
+                Fieldset('Add Particulars',
                     Formset('titles')),
                 Field('note'),
                 HTML("<br>"),
