@@ -11,13 +11,16 @@ class DateInput(forms.DateInput):
     input_type = 'date'
 
 class AddUsersForm(forms.ModelForm):
-	class Meta:
-		model = AddUsers
-		fields = '__all__'
-		widgets = {
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['medical_history'].required = False
+    class Meta:
+        model = AddUsers
+        fields = '__all__'
+        widgets = {
             'date_of_birth': DateInput(),
-			'membership_start_date':DateInput(),
-			'membership_end_date':DateInput(),
+        	'membership_start_date':DateInput(),
+        	'membership_end_date':DateInput(),
         }
 
 
@@ -59,6 +62,6 @@ class CollectionForm(forms.ModelForm):
                     Formset('titles')),
                 Field('note'),
                 HTML("<br>"),
-                ButtonHolder(Submit('submit', 'Save')),
+                ButtonHolder(Submit('submit', 'Generate Invoice')),
                 )
             )

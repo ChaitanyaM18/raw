@@ -6,3 +6,8 @@
     background-size: cover;
     background-position: center;
 }
+
+.err_404 > h3 > p{
+  font-size: 20px;
+  color: white;
+}

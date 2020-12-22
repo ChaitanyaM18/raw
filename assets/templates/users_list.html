@@ -1,51 +1,87 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {% block content %}
-
-<div class="container">
+  <div class="container">
   <div class="card">
-  <div class="card-header">
-    <h3>Registered Users</h3>
-  </div>
-<div class="card-body">
+    <div class="card-header">
+      <h3>Registered Users</h3>
+    </div>
+    <div style="padding-top:15px;padding-left:10px;" class="mx-auto" style="width: 200px;">
+      <center>
+      <form class="form-inline" method="GET">
+      <div class="col-md-5">
+        <input  type="text" name="first_name" class="form-control" type="search" placeholder="First Name" aria-label="Search" value='{{ request.GET.first_name}}'>
+        <!-- <input type="text" name="first_name" value='{{ request.GET.first_name}}'> -->
+      </div>
+      <div class="col-md-5">
+        <input type="text" name="last_name" class="form-control" type="search" placeholder="Last Name" aria-label="Search" value='{{ request.GET.last_name}}'>
+        <!-- <input type="text" name="last_name" value='{{ request.GET.last_name}}'> -->
+      </div>
+      <div class="col-md-2">
+        <button type="submit" value="Search" id="submit-id-submit" class="btn btn-outline-success">Search</button>
+        <!-- <input type="submit" value="Search" class="btn btn-primary" id="submit-id-submit"> -->
+      </div>
+    </form>
+    </center>
+    </div>
   <div class="table-responsive">
     <table class="table">
       <thead  class="thead-dark">
-        <tr>
-          <th scope="row"></th>
-          <th scope="col">First Name</th>
-          <th scope="col">Last Name</th>
-          <th scope="col">DOB</th>
-          <th scope="col">Membership Start Date</th>
-          <th scope="col">Membership End Date</th>
-          <th scope="col">Update</th>
-          <th scope="col">Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for object in object_list %}
-        <tr>
-          <th scope="row"></th>
-          <td>{{object.first_name}}</td>
-          <td>{{object.last_name}}</td>
-          <td>{{object.date_of_birth }}</td>
-          <td>{{object.membership_start_date}}</td>
-          <td>{{object.membership_end_date}}</td>
-          {% if object.id  %}
-              <td><a class="btn btn-outline-success" href="{% url 'update' pk=object.id %}">Update</a></td>
-              <td><a class="btn btn-outline-danger" href="{% url 'delete' pk=object.id %}">Delete</a></td>
-          {% endif %}
+      <tr>
+        <th scope="row"></th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Membership Start Date</th>
+        <th scope="col">Membership End Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for search in search_list %}
+      <tr>
+        <th scope="row"></th>
+        <td>{{search.first_name}}</td>
+        <td>{{search.last_name}}</td>
+        <td>{{search.membership_start_date }}</td>
+        <td>{{search.membership_end_date}}</td>
+
+        {% if search.id  %}
+          <td><a class="btn btn-outline-info" href="{% url 'update' pk=search.id %}">Update</a></td>
+        {% else %}
+        {% endif %}
+        {% empty %}
         {% endfor %}
-        </tr>
-      </tbody>
-    </table>
+      </tr>
+    </tbody>
+  </table>
+</div>
+    {% if search_list.has_other_pages %}
+    <ul class="pagination justify-content-center">
+      {% if search_list.has_previous %}
+      <li class="page-item"><a href="?page={{ search_list.previous_page_number }}">&laquo;</a></li>
+      {% else %}
+      <li class="page-item"><span>&laquo;</span></li>
+      {% endif %}
 
-</div>
-</div>
+      {% for i in search_list.paginator.page_range %}
+      {% if search_list.number == i %}
+      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+      <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if search_list.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ search_list.next_page_number }}">&raquo;</a></li>
+      {% else %}
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Next">
+          <span>&raquo;</span>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+    {% endif %}
 </div>
 </div>
 
-{% for post in posts %}
-{{ post.first_name }}
-{% endfor %}
-{% endblock %}
+{% endblock content %}
