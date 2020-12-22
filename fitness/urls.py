@@ -10,5 +10,6 @@ urlpatterns = [
     path('get_alerts',views.get_alerts,name='get_alerts'),
     path('generate_invoice/',views.GenerateInvoiceView.as_view(),name='generate_invoice'),
     path('download_summary/',views.download_summary,name='download_summary'),
+    path('filter/',views.filter,name='filter')
 
 ]

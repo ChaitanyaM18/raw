@@ -19,6 +19,8 @@ from .forms import GenerateInvoiceForm,AddUsersForm,ItemFormSet, CollectionForm
 import pdfkit
 import json
 from jsonmerge import merge
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 class HomeView(TemplateView):
 	template_name = "base.html"
@@ -30,7 +32,7 @@ class AddUsersCreate(CreateView):
 	template_name = 'add_users.html'
 
 	def get_success_url(self):
-		return reverse_lazy('list')
+		return reverse_lazy('filter')
 
 
 class UsersListView(ListView):
@@ -58,15 +60,11 @@ class UsersDeleteView(DeleteView):
 	template_name = "users_delete.html"
 
 	def get_success_url(self):
-		return reverse_lazy('list')
+		return reverse_lazy('filter')
 
 def get_alerts(request):
-	print(timezone.now(),'timezone.now().date()')
 	before_5_days = timezone.now().date() + timedelta(days=5)
-	print(before_5_days,'before_5_days')
 	posts = AddUsers.objects.filter(Q(membership_end_date = before_5_days)).order_by('membership_start_date')
-	# a = AddUsers.objects.get(id=7)
-	# print(a.membership_end_date)
 	return render(request,'alerts.html',{'posts':posts})
 
 class GenerateInvoiceView(CreateView):
@@ -84,57 +82,6 @@ class GenerateInvoiceView(CreateView):
         else:
             data['titles'] = ItemFormSet()
         return data
-
-    # def form_valid(self, form):
-	#     context = self.get_context_data()
-	#     titles = context['titles']
-	#     dict_df = pd.DataFrame(columns=['item_name', 'item_quantity','item_amount'])
-	#     with transaction.atomic():
-	# 	    self.object = form.save()
-	# 	    print(self.object.id)
-	# 	    if titles.is_valid():
-	# 		    titles.instance = self.object
-	# 		    titles.save()
-	# 	    customer_name = form.cleaned_data['customer_name']
-	# 	    item_date = form.cleaned_data['purchased_date']
-	# 	    for data in titles.cleaned_data:
-	# 		    item_name = data.get('item_name')
-	# 		    item_quantity = data.get('item_quantity')
-	# 		    item_amount = data.get('item_amount')
-	# 		    dict_df = dict_df.append({'item_name': str(data.get('item_name')), 'item_quantity': str(data.get('item_quantity')),'item_amount': str(data.get('item_amount'))}, ignore_index=True)
-	# 	    dict_df['item_quantity'] = dict_df['item_quantity'].astype(int)
-	# 	    dict_df['item_amount'] = dict_df['item_amount'].astype(int)
-	# 	    dict_df['total_amount'] = dict_df['item_quantity'] * dict_df['item_amount']
-	# 	    dict_df['total_amount'].sum()
-	# 	    # dict_df.ignore_index(inplace=True)
-	# 	    dict_df.to_csv('dict_df.csv')
-	# 	    total = dict_df['total_amount'].sum()
-	# 	    if titles.is_valid():
-	# 		    titles.instance = self.object
-	# 		    titles.save()
-	# 		    print('save')
-	# 		# total_amount = float(item_quantity)*float(item_amount)
-	# 	    pd.set_option('colheader_justify', 'center')
-	# 	    data = {
-	# 	    'dict_df':dict_df,
-	# 		'customer_name':customer_name,
-	# 		'item_date':item_date,
-	# 	    'total':total,
-	# 	    }
-	# 	    pdff = render_to_pdf('invoice.html', data)
-	# 	    print(pdff)
-	# 	    # f = open('assets/templates/in.html', 'w')
-	# 	    # print(f)
-	# 	    # # f.write('<div style="page-break-before: always;">')
-	# 	    # k = dict_df.to_html()
-	# 	    # f.write(k)
-	# 	    # pdfkit.from_file('assets/templates/in.html','summary.pdf')
-	# 	    # return HttpResponse(pdff, content_type='application/pdf')
-	#     return super(GenerateInvoiceView, self).form_valid(form)''
-    # def download_summary(self,data):
-	#     pdf = render_to_pdf('in.html', data)
-	#     print('Summary')
-	#     return HttpResponse(pdf, content_type='application/pdf')
 
     def form_valid(self, form):
 	    context = self.get_context_data()
@@ -154,16 +101,22 @@ class GenerateInvoiceView(CreateView):
 				    item_quantity = data.get('item_quantity')
 				    item_amount = data.get('item_amount')
 				    dict_df = dict_df.append({'item_name': str(data.get('item_name')), 'item_quantity': str(data.get('item_quantity')),'item_amount': str(data.get('item_amount'))}, ignore_index=True)
-			    dict_df['item_quantity'] = dict_df['item_quantity'].astype(int)
-			    dict_df['item_amount'] = dict_df['item_amount'].astype(int)
+			    dict_df['item_quantity'] = dict_df['item_quantity'].astype(float)
+			    dict_df['item_amount'] = dict_df['item_amount'].astype(float)
 			    dict_df['total_amount'] = dict_df['item_quantity'] * dict_df['item_amount']
 			    # dict_df.ignore_index(inplace=True)
 			    total = dict_df['total_amount'].sum()
 			    self.object.grand_total = total
+			    id = self.object.id
 			    titles.save()
 			    dict_df.to_csv('dict_df.csv')
 			    item_date = str(item_date)
 			    total = str(total)
+			    id = str(id)
+
+			    invoice_id = open("media/invoice_id.txt", "w")
+			    invoice_id.writelines(id)
+			    invoice_id.close()
 
 
 			    c = open("media/customer_name.txt", "w")
@@ -181,51 +134,13 @@ class GenerateInvoiceView(CreateView):
 			    t = open("media/total.txt", "w")
 			    t.writelines(total)
 			    t.close()
-
-			    # dict_df = dict_df.to_json()
-			    # item_date = str(item_date)
-			    # total = str(total)
-			    # data = {
-			    # 'dict_df':dict_df,
-			    # 'customer_name':customer_name,
-			    # 'item_date':item_date,
-			    # 'total':total,
-			    # }
-			    # data1 = {
-			    # 'customer_name':customer_name,
-			    # 'item_date':item_date,
-			    # 'total':total,
-			    # }
-			    # with open("sample.json", "w") as outfile:
-				#     json.dump(data1, outfile)
-			    # pdf = render_to_pdf('in.html', data)
-			    # new_hand = GenerateInvoice(customer_name=customer_name, purchased_date=item_date, customer_address=customer_address, grand_total='grand_total')
-			    # new_hand.grand_total = total
-			    # new_hand.save()
-
-			    # print(GenerateInvoice.objects.exclude(grand_total=''))
-			    # self.download_summary(data)
-		    # return HttpResponse(pdf, content_type='application/pdf')
 	    return super(GenerateInvoiceView, self).form_valid(form)
 
 
     def get_success_url(self):
 	    return reverse_lazy('download_summary')
 
-    # def download_summary(self,request):
-	#     pdf = render_to_pdf('in.html', self.data)
-	#     return HttpResponse(pdf, content_type='application/pdf')
-
-    # def dispatch(self, request, *args, **kwargs):
-	#     self.custom_save_session(request)
-	#     return super(GenerateInvoiceView, self).dispatch(request, *args, **kwargs)
-
 def download_summary(request):
-    # with open("sample.json","r") as outfile:
-	#     data = json.load(outfile)
-    # print(data)
-    # f = open('assets/templates/temp.html', 'w')
-	#
     file1 = open("media/customer_name.txt", "r")
     customer_name = file1.read()
     file1.close()
@@ -242,6 +157,10 @@ def download_summary(request):
     total = file4.read()
     file4.close()
 
+    file5 = open("media/invoice_id.txt", "r")
+    invoice_id = file5.read()
+    file5.close()
+
     dict_df = pd.read_csv('dict_df.csv').drop(columns='Unnamed: 0')
 
     data = {
@@ -250,19 +169,37 @@ def download_summary(request):
     'customer_address':customer_address,
     'total':total,
     'dict_df':dict_df,
+	'invoice_id':invoice_id,
     }
     pdf = render_to_pdf('temp.html', data)
     return HttpResponse(pdf, content_type='application/pdf')
-    # return render(request,'temp.html',{'data':data})
 
-	# pdfkit.from_file(
-	# 	'master/templates/master/inter.html',
-	# 	'summaries/pdf/summary' + timestr + '.pdf')
-    # final_data = {
-    # 'data':data,
-    # 'dict_df_p':dict_df_p,
-    # }
-    # dict_df_p = dict_df_p.to_dict()
-    # result = merge(data, dict_df_p)
-    # pdf = render_to_pdf('in.html', data,dict_df_p)
-    # return HttpResponse(pdf, content_type='application/pdf')
+def filter(request):
+    search_list = AddUsers.objects.all()
+    first_name = request.GET.get('first_name')
+    last_name = request.GET.get('last_name')
+    if first_name or last_name :
+	    search_list = AddUsers.objects.filter(
+        Q(first_name__icontains=first_name) & Q(last_name__icontains=last_name)).distinct()
+
+    paginator = Paginator(search_list, 5)
+    page = request.GET.get('page')
+
+    try:
+        search_list = paginator.page(page)
+    except PageNotAnInteger:
+        search_list = paginator.page(1)
+    except EmptyPage:
+        search_list = paginator.page(paginator.num_pages)
+    context = {
+        'search_list': search_list
+    }
+    return render(request, 'users_list.html', context)
+
+
+# def handler404(request, *args, **argv):
+#     return render(request, '404.html', status=404)
+#
+#
+# def handler500(request, *args, **argv):
+#     return render(request, '500.html', status=404)
