@@ -14,7 +14,7 @@ print ("base dir path", BASE_DIR)
 SECRET_KEY = 't%_zu2@n26v@efhhhwwc=a(iemm68f2qo&1iq-zvuoiifsbo+i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 

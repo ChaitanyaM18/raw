@@ -8,8 +8,8 @@ urlpatterns = [
     path('',include('fitness.urls')),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# handler404 = 'fitness.views.handler404'
-# handler500 = 'fitness.views.handler500'
+handler404 = 'fitness.views.handler404'
+handler500 = 'fitness.views.handler500'
 
 admin.site.site_header = "RAW FITNESS"
 admin.site.site_title = "RAW FITNESS"
