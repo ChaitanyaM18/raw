@@ -25,11 +25,25 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 class HomeView(TemplateView):
 	template_name = "base.html"
 
+	def get_context_data(self, **kwargs):
+		data = super(HomeView, self).get_context_data(**kwargs)
+		data['home']='active'
+		return data
+
+	def get_success_url(self):
+	    return reverse_lazy('home')
+
+
 
 class AddUsersCreate(CreateView):
 	model = AddUsers
 	form_class = AddUsersForm
 	template_name = 'add_users.html'
+
+	def get_context_data(self, **kwargs):
+		data = super(AddUsersCreate, self).get_context_data(**kwargs)
+		data['add']='active'
+		return data
 
 	def get_success_url(self):
 		return reverse_lazy('filter')
@@ -65,7 +79,11 @@ class UsersDeleteView(DeleteView):
 def get_alerts(request):
 	before_5_days = timezone.now().date() + timedelta(days=5)
 	posts = AddUsers.objects.filter(Q(membership_end_date = before_5_days)).order_by('membership_start_date')
-	return render(request,'alerts.html',{'posts':posts})
+	context = {
+        'posts': posts,
+		'get_alerts':'active',
+    }
+	return render(request,'alerts.html',context)
 
 class GenerateInvoiceView(CreateView):
     model = GenerateInvoice
@@ -81,6 +99,7 @@ class GenerateInvoiceView(CreateView):
             data['titles'] = ItemFormSet(self.request.POST)
         else:
             data['titles'] = ItemFormSet()
+        data['generate_invoice']='active'
         return data
 
     def form_valid(self, form):
@@ -192,7 +211,8 @@ def filter(request):
     except EmptyPage:
         search_list = paginator.page(paginator.num_pages)
     context = {
-        'search_list': search_list
+        'search_list': search_list,
+		'filter':'active',
     }
     return render(request, 'users_list.html', context)
 
